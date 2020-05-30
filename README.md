@@ -23,5 +23,16 @@ Returns a Notification object configured for the local context.
 If this is not supplied, the default values 'normal' and [] are used.
 Any values supplied here can be overridden each time a new notification is issued.
 
-__issue(*path* [, *message*] [, *options*])__
-Writes a notification decorated with *message* into the specified Signal K *path*.
+__issue(*path*, *message* [, *options*])__
+Writes a notification into the Signal K data store.
+
+*path* the notification path (for example 'notifications.mynotification').
+
+*message* the message to be attached to the notification.
+
+*options* is a structure which can be used to pass values for the 'state' and 'method' fields of the generated notification.
+Any supplied values will override any defaults established when the Notification object was instantiated.
+
+__cancel(*path*)__
+Cancel (delete) any existing nottification on *path*.
+
