@@ -10,7 +10,7 @@ module.exports = class Notification {
 
     static issue(key, message, state, method) {
         state = (state)?state:((this.options.state)?this.options.state:"normal");
-        method = (method?((Array.isArray(method))?method:[method]):this.options.method;
+        method = (method)?((Array.isArray(method))?method:[method]):((this.options.method)?this.options.method:[]);
         var delta = { "context": "vessels." + this.id, "updates": [ { "source": { "label": "self.notificationhandler" }, "values": [ { "path": key, "value": null } ] } ] };
         delta.updates[0].values[0].value = { "state": state, "message": message, "method": method, "timestamp": (new Date()).toISOString() };
         this.handler(this.id, delta);
