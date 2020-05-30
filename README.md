@@ -12,7 +12,10 @@ notification.issue(notificationPath, notificationMessage);
 notification.cancel(notificationPath);
 ```
 
+## Constructor
+
 __Notification(*appHandler*, *pluginId* [, *options* ])__
+
 Returns a Notification object configured for the local context.
 
 *appHandler* is a reference to the local application message handler (usually ```app.handleMessage```).
@@ -22,6 +25,8 @@ Returns a Notification object configured for the local context.
 *options* is a structure which can be used to pass default values for the 'state' and 'method' fields of generated notifications.
 If this is not supplied, the default values 'normal' and [] are used.
 Any values supplied here can be overridden each time a new notification is issued.
+
+## Methods
 
 __issue(*path*, *message* [, *options*])__
 Writes a notification into the Signal K data store.
