@@ -3,7 +3,7 @@ Notification library for use by Signal K node server plugins.
 ```
 const Notification = require("./signalk-libnotification/Notification.js");
 
-const notification = new Notification(app.handleMessage, plugin.id, { "state": "alert", "method": [ "sound" ] });
+const notification = new Notification(app.handleMessage, app.selfId, { "state": "alert", "method": [ "sound" ] });
 
 var notificationPath = "notifications.mydummy";
 var notificationMessage = "Just a dummy notification";
@@ -14,13 +14,13 @@ notification.cancel(notificationPath);
 
 ## Constructor
 
-__Notification(*appHandler*, *pluginId* [, *options* ])__
+__Notification(*appHandler*, *id* [, *options* ])__
 
 Returns a Notification object configured for the local context.
 
 *appHandler* is a reference to the local application message handler (usually ```app.handleMessage```).
 
-*pluginId* is an identifier used by *messageHandler* to decorate issued notifications in a way that shows the originating application (usually ```plugin.id```).
+*id* is the Signal K context in which notifications will be managed (usually ```app.selfId```).
 
 *options* is a structure which can be used to pass default values for the 'state' and 'method' fields of generated notifications.
 If this is not supplied, the default values 'normal' and [] are used.
