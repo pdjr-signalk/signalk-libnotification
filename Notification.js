@@ -9,8 +9,8 @@ module.exports = class Notification {
     }
 
     issue(key, message, options={}) {
-        var state = (this.options && this.options.state)?this.options.state:"normal";
-        var method = (this.options && this.options.method)?this.options.method:[];
+        var state = (this.options.state)?this.options.state:"normal";
+        var method = (this.options.method)?this.options.method:[];
 
         state = (options.state)?options.state:state;
         method = (options.method)?options.method:method;
