@@ -8,7 +8,7 @@ module.exports = class Notification {
         this.options = options;
     }
 
-    static issue(key, message, options={}) {
+    issue(key, message, options={}) {
         var state = (this.options && this.options.state)?this.options.state:"normal";
         var method = (this.options && this.options.method)?this.options.method:[];
 
@@ -20,7 +20,7 @@ module.exports = class Notification {
         this.handler(this.id, delta);
     }
 
-    static cancel(key) {
+    cancel(key) {
         var delta = { "context": "vessels." + this.id, "updates": [ { "source": { "label": "self.notificationhandler" }, "values": [ { "path": key, "value": null } ] } ] };
         this.handler(this.id, delta);
     }
