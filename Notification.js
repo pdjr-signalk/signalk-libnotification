@@ -12,6 +12,7 @@ module.exports = class Notification {
         var state = (this.options.state)?this.options.state:"normal";
         var method = (this.options.method)?this.options.method:[];
 
+        key = (key.startsWith("notifications."))?key:("notifications." + key);
         state = (options.state)?options.state:state;
         method = (options.method)?options.method:method;
         
