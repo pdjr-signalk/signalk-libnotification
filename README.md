@@ -36,6 +36,7 @@ Any values supplied here can be overridden each time a new notification is issue
 ## Methods
 
 __issue(*key*, *message* [, *options*])__
+
 Writes a notification into the Signal K data store.
 *key* can be an absolute value (one that begins with the string 'notifications.')
 or a relative value in which case the string 'notifications.' is prepended to
@@ -49,6 +50,7 @@ Any supplied values will override any defaults established when the Notification
 object was instantiated.
 
 __cancel(*key*)__
+
 Cancels (deletes) any existing nottification on *key* in the Signal K data store.
 *key* can be an absolute value (one that begins with the string 'notifications.')
 or a relative value in which case the string 'notifications.' is prepended to
