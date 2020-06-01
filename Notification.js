@@ -9,6 +9,7 @@ module.exports = class Notification {
     }
 
     issue(key, message, options={}) {
+        if (!key.match(/^notifications\./)) key = "notifications." + key;
         var state = (options.state)?options.state:((this.options.state)?this.options.state:"normal");
         var method = (options.method)?options.method:((this.options.method)?this.options.method:[]);
 
@@ -18,6 +19,7 @@ module.exports = class Notification {
     }
 
     cancel(key) {
+        if (!key.match(/^notifications\./)) key = "notifications." + key;
         var delta = { "context": "vessels." + this.app.selfId, "updates": [ { "source": { "label": "self.notificationhandler" }, "values": [ { "path": key, "value": null } ] } ] };
         this.app.handleMessage(this.id, delta);
     }
