@@ -1,15 +1,16 @@
 # signalk-libnotification
+
 Notification helper library for use by Signal K node server plugins.
 
-Allows insertion and deletion of keys from the Signal K
-```vessels.self.notifications.``` tree.
+Allows insertion and deletion of keys in the Signal K data store
+'vessels.self.notifications.' tree.
 
 ```
 const Notification = require("./signalk-libnotification/Notification.js");
 
 const notification = new Notification(app, plugin.id, { "state": "alert", "method": [ "sound" ] });
 
-var notificationPath = ".mynotifications.mydummynotification";
+var notificationPath = "mynotifications.mydummynotification";
 var notificationMessage = "Just a dummy notification";
 
 notification.issue(notificationPath, notificationMessage);
@@ -31,7 +32,8 @@ generated notifications (conventionally use the ```plugin.id``` variable).
 *options* is a structure which can be used to pass default values for the
 'state' and 'method' fields of generated notifications.
 If this is not supplied, the default values 'normal' and [] are used.
-Any values supplied here can be overridden each time a new notification is issued.
+Any values supplied here can be overridden each time a call is made to
+the __issue()__ method.
 
 ## Methods
 
@@ -42,7 +44,7 @@ Writes a notification into the Signal K data store.
 or a relative value in which case the string 'notifications.' is prepended to
 *key*.
 
-*message* the message to be attached to the notification.
+*message* the message text to be attached to the notification.
 
 *options* is a structure which can be used to pass values for the 'state' and
 'method' fields of the generated notification.
@@ -51,7 +53,7 @@ object was instantiated.
 
 __cancel(*key*)__
 
-Cancels (deletes) any existing nottification on *key* in the Signal K data store.
+Cancels (deletes) any existing notification on *key* in the Signal K data store.
 *key* can be an absolute value (one that begins with the string 'notifications.')
 or a relative value in which case the string 'notifications.' is prepended to
 *key*.
