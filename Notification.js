@@ -20,7 +20,10 @@ module.exports = class Notification {
 
     cancel(key) {
         if (!key.match(/^notifications\./)) key = "notifications." + key;
-        var delta = { "context": "vessels." + this.app.selfId, "updates": [ { "source": { "label": "self.notificationhandler" }, "values": [ { "path": key, "value": null } ] } ] };
+        var delta = { "context": "vessels." + this.app.selfId, "updates": [ { "source": { "label": "self.notificationhandler" }, "values": [
+            { "path": key, "value": { "state": "normal", "method": [], "message": "Setting notification to 'normal'", "timestamp": (new Date()).toISOString() },
+            { "path": key, "value": null }
+        ] } ] };
         this.app.handleMessage(this.id, delta);
     }
 
