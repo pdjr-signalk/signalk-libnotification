@@ -1,9 +1,6 @@
 # signalk-libnotification
 
-Notification helper library for use by Signal K node server plugins.
-
-Allows insertion and deletion of keys in the Signal K data store
-'vessels.self.notifications.' tree.
+Issue and cancel Signal K notifications.
 
 ```
 const Notification = require("./signalk-libnotification/Notification.js");
