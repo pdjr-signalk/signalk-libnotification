@@ -34,8 +34,4 @@ module.exports = class Notification {
     return(id);
   }
 
-  getNotification(id) {
-
-  }
-  
 }
