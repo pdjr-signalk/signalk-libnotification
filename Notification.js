@@ -16,45 +16,26 @@
  * permissions and limitations under the License.
  */
 
+const Delta = require('signalk-libdelta');
+
 module.exports = class Notification {
 
-    constructor(app, id, options={}) {
-        this.app = app;
-        this.id = id;
-        this.options = options;
-    }
+  constructor(app, id) {
+    this.delta = new Delta(app, id);
+  }
 
-    static create(message, state="normal", method=[], extras={}) {
-      return(Object.keys(extras).reduce((key, a) => { a[key] = extras[key]; return(a); }, { message : message, state: state, method: method }));
-    }
+  notify(path, value, sourceId) {
+    var id = (value.id) || crypto.randomUUID();
+    value.id = id;
+    value.path = path;
+    value.data = app.getSelfPath(path);
+    value.actions = [];
+    this.delta.clear().addValue(path, value).commit().clear();
+    return(id);
+  }
 
-    static match(pattern, app) {
-      var retval = false;
-      if (pattern) {
-        var parts = pattern.split(/\:/);
-        var value = app.getSelfPath(parts[0]);
-        retval = (parts[1])?((value) && (value.state) && (value.state == parts[1])):(value);
-      }
-      return(retval);
-    }
-      
-    issue(key, message, options={}) {
-        if (!key.match(/^notifications\./)) key = "notifications." + key;
-        var state = (options.state)?options.state:((this.options.state)?this.options.state:"normal");
-        var method = (options.method)?options.method:((this.options.method)?this.options.method:[]);
+  getNotification(id) {
 
-        var delta = { "context": "vessels." + this.app.selfId, "updates": [ { "source": { "label": "self.notificationhandler" }, "values": [ { "path": key, "value": null } ] } ] };
-        delta.updates[0].values[0].value = { "state": state, "message": message, "method": method, "timestamp": (new Date()).toISOString() };
-        this.app.handleMessage(this.id, delta);
-    }
-
-    cancel(key) {
-        if (!key.match(/^notifications\./)) key = "notifications." + key;
-        var delta = { "context": "vessels." + this.app.selfId, "updates": [ { "source": { "label": "self.notificationhandler" }, "values": [
-            { "path": key, "value": null }
-            //{ "path": key, "value": { "state": "normal", "method": [], "message": "Setting notification to 'normal'", "timestamp": (new Date()).toISOString() } }
-        ] } ] };
-        this.app.handleMessage(this.id, delta);
-    }
-
+  }
+  
 }
