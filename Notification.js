@@ -43,17 +43,25 @@ module.exports = class Notification {
 
   getNotifications(f) {
     if (this.debug) this.app.debug("getNotifications(f)...");
+    var matches = {};
 
-    return(this._getNotifications(this.app.getSelfPath('notifications'), f));
+    this._getNotifications(this.app.getSelfPath('notifications'), matches, f);
+    return(matches);
   }
 
-  _getNotifications(notifications, f) {
-    if (this.debug) this.app.debug("_getNotification(%s,f)...", JSON.stringify(notifications, null, 2));
+  _getNotifications(notifications, matches, f) {
+    if (this.debug) this.app.debug("_getNotification(_,_,_)...");
     var retval = {};
 
     for (var key in notifications) {
       if ((notifications[key] !== null) && (typeof notifications[key] == 'object') && (!Array.isArray(notifications[key]))) {
-        this._getNotifications(notifications[key], f);
+        if ((notifications[key].value) && (notifications[key].path)) {
+          if ((!f) || (f(notifications[key]))) {
+            matches[notifications[key].path] = notifications[key];
+          }
+        } else {
+          this._getNotifications(notifications[key], f, matches);
+        }
       }
     }
 
