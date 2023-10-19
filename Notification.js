@@ -55,7 +55,7 @@ module.exports = class Notification {
 
     for (var key in notifications) {
       if ((notifications[key] !== null) && (typeof notifications[key] == 'object') && (!Array.isArray(notifications[key]))) {
-        if ((notifications[key].value) && (notifications[key].path)) {
+        if ((key == 'value') && (notifications[key].state) && (notifications[key].path)) {
           if ((!f) || (f(notifications[key]))) {
             matches[notifications[key].path] = notifications[key];
           }
