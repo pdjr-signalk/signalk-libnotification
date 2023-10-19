@@ -41,7 +41,7 @@ module.exports = class Notification {
     return(_getNotification(notifications, id));
   }
 
-  getNotifications(f=()=>true) {
+  getNotifications(f) {
     if (this.debug) this.app.debug("getNotifications(f)...");
 
     return(this._getNotifications(this.app.getSelfPath('notifications'), f));
@@ -58,7 +58,7 @@ module.exports = class Notification {
             retval[notifications[i].value.path] = notifications[i].value;
           }
         } else {
-        retval = { ...retval, ...this._getNotifications(notifications[i], f) };
+          retval = { ...retval, ... this._getNotifications(notifications[i], f) };
         }
       }
     }
