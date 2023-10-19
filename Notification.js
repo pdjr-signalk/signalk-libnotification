@@ -20,8 +20,9 @@ const { isObject } = require("lodash");
 
 module.exports = class Notification {
 
-  constructor(app, debug) {
+  constructor(app, debug=false) {
     this.app = app;
+    this.debug = debug;
   }
 
   makeNotification(path, value, options={}) {
@@ -34,20 +35,20 @@ module.exports = class Notification {
   }
 
   getNotification(id) {
-    if (debug) this.app.debug("getNotification(%s)...", id);
+    if (this.debug) this.app.debug("getNotification(%s)...", id);
 
     const notifications = this.app.getSelfPath('notifications');
     return(_getNotification(notifications, id));
   }
 
   getNotifications(f=()=>true) {
-    if (debug) this.app.debug("getNotifications(f)...");
+    if (this.debug) this.app.debug("getNotifications(f)...");
 
     return(this._getNotifications(this.app.getSelfPath('notifications'), f));
   }
 
   _getNotifications(notifications, f) {
-    if (debug) this.app.debug("_getNotification(%s,f)...", notifications);
+    if (this.debug) this.app.debug("_getNotification(%s,f)...", notifications);
     var retval = {};
 
     for (var i = 0; i < Object.keys(notifications).length; i++) {
