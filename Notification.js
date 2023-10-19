@@ -36,7 +36,11 @@ module.exports = class Notification {
     return(_getNotification(notifications, id));
   }
 
-  getNotifications(notifications, f=(n)=>true) {
+  getNotifications(f=()=>true) {
+    return(this._getNotifications(this.app.getSelfPath('notifications'), f));
+  }
+
+  _getNotifications(notifications, f) {
     var retval = {};
 
     for (var i = 0; i < Object.keys(notifications).length; i++) {
