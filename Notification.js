@@ -33,7 +33,22 @@ module.exports = class Notification {
 
   getNotification(id) {
     const notifications = this.app.getSelfPath('notifications');
-    console.log(">>>>>>>>>>>>> %s", JSON.stringify(notifications, null, 2));
+    return(_getNotification(notifications, id));
+  }
+
+  getNotifications(notifications, f=(n)=>true) {
+    var retval = {};
+
+    for (var i = 0; i < Object.keys(notifications).length; i++) {
+      if ((notifications[i].value) && (notifications[i].value.path)) {
+        if (f(notifications[i].value)) {
+          retval[notifications[i].value.path] = notifications[i].value;
+        }
+      } else {
+        retval = { ...retval, ...this._getNotifications(notifications[i], f) };
+      }
+    }
+    return(retval);
   }
 
 }
