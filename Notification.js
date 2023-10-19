@@ -32,7 +32,7 @@ module.exports = class Notification {
   }
 
   getNotification(id) {
-    const notifications = this.app.getSelfPath('notifications.');
+    const notifications = this.app.getSelfPath('notifications');
     console.log(">>>>>>>>>>>>> %s", JSON.stringify(notifications, null, 2));
   }
 
