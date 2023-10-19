@@ -50,7 +50,7 @@ module.exports = class Notification {
   }
 
   _getNotifications(notifications, matches, f) {
-    if (this.debug) this.app.debug("_getNotification(_,_,_)...");
+    if (this.debug) this.app.debug("_getNotification(_,%s,_)...", JSON.stringify(matches));
     var retval = {};
 
     for (var key in notifications) {
