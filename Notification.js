@@ -51,17 +51,12 @@ module.exports = class Notification {
     if (this.debug) this.app.debug("_getNotification(%s,f)...", JSON.stringify(notifications, null, 2));
     var retval = {};
 
-    for (var i = 0; i < Object.keys(notifications).length; i++) {
-      if ((notifications[i] !== null) && (typeof notifications[i] == 'object') && (!Array.isArray(notifications[i]))) {
-        if ((notifications[i].value) && (notifications[i].value.path)) {
-          if (f(notifications[i].value)) {
-            retval[notifications[i].value.path] = notifications[i].value;
-          }
-        } else {
-          retval = { ...retval, ... this._getNotifications(notifications[i], f) };
-        }
+    for (var key in notifications) {
+      if ((notifications[key] !== null) && (typeof notifications[key] == 'object') && (!Array.isArray(notifications[key]))) {
+        this._getNotifications(notifications[key], f);
       }
     }
+
     return(retval);
   }
 
