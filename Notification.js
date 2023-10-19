@@ -57,9 +57,9 @@ module.exports = class Notification {
           if (f(notifications[i].value)) {
             retval[notifications[i].value.path] = notifications[i].value;
           }
-        }
-      } else {
+        } else {
         retval = { ...retval, ...this._getNotifications(notifications[i], f) };
+        }
       }
     }
     return(retval);
