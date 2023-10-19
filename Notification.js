@@ -60,12 +60,11 @@ module.exports = class Notification {
             matches[notifications[key].path] = notifications[key];
           }
         } else {
-          this._getNotifications(notifications[key], f, matches);
+          this._getNotifications(notifications[key], matches, f);
         }
       }
     }
-
-    return(retval);
+    return;
   }
 
 }
