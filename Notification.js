@@ -16,22 +16,19 @@
  * permissions and limitations under the License.
  */
 
-const Delta = require('signalk-libdelta');
-
 module.exports = class Notification {
 
-  constructor(app, id) {
-    this.delta = new Delta(app, id);
+  constructor(app) {
+    this.app = app;
   }
 
-  notify(path, value, sourceId) {
-    var id = (value.id) || crypto.randomUUID();
-    value.id = id;
-    value.path = path;
-    value.data = app.getSelfPath(path);
-    value.actions = [];
-    this.delta.clear().addValue(path, value).commit().clear();
-    return(id);
+  static makeNotification(path, value, options={}) {
+    var notification = { ...value, ...options };
+    notification.id = (notification.id) || crypto.randomUUID();
+    notification.path = path;
+    notification.data = { value: this.app.getSelfPath(path + ".value") };
+    notification.actions = notification.actions || [];
+    return(notification); 
   }
 
 }
