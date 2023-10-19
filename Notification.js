@@ -52,9 +52,11 @@ module.exports = class Notification {
     var retval = {};
 
     for (var i = 0; i < Object.keys(notifications).length; i++) {
-      if ((notifications[i]) && (isObject(notifications[i])) && (notifications[i].value) && (isObject(notifications[i].value)) && (notifications[i].path)) {
-        if (f(notifications[i].value)) {
-          retval[notifications[i].value.path] = notifications[i].value;
+      if ((notifications[i] !== null) && (typeof notifications[i] == 'object') && (!Array.isArray(notifications[i]))) {
+        if ((notifications[i].value) && (notifications[i].value.path)) {
+          if (f(notifications[i].value)) {
+            retval[notifications[i].value.path] = notifications[i].value;
+          }
         }
       } else {
         retval = { ...retval, ...this._getNotifications(notifications[i], f) };
