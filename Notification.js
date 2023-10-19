@@ -22,7 +22,7 @@ module.exports = class Notification {
     this.app = app;
   }
 
-  static makeNotification(path, value, options={}) {
+  makeNotification(path, value, options={}) {
     var notification = { ...value, ...options };
     notification.id = (notification.id) || crypto.randomUUID();
     notification.path = path;
