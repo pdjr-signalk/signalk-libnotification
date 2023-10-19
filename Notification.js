@@ -1,5 +1,7 @@
 "use strict;"
 
+const { isObject } = require("lodash");
+
 /**********************************************************************
  * Copyright 2022 Paul Reeve <preeve@pdjr.eu>
  *
@@ -44,7 +46,7 @@ module.exports = class Notification {
     var retval = {};
 
     for (var i = 0; i < Object.keys(notifications).length; i++) {
-      if ((notifications[i].value) && (notifications[i].value.path)) {
+      if ((notifications[i]) && (isObject(notifications[i])) && (notifications[i].value) && (isObject(notifications[i].value)) && (notifications[i].path)) {
         if (f(notifications[i].value)) {
           retval[notifications[i].value.path] = notifications[i].value;
         }
