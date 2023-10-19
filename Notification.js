@@ -48,7 +48,7 @@ module.exports = class Notification {
   }
 
   _getNotifications(notifications, f) {
-    if (this.debug) this.app.debug("_getNotification(%s,f)...", notifications);
+    if (this.debug) this.app.debug("_getNotification(%s,f)...", JSON.stringify(notifications, null, 2));
     var retval = {};
 
     for (var i = 0; i < Object.keys(notifications).length; i++) {
