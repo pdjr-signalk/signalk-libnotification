@@ -1,6 +1,7 @@
 "use strict;"
 
 const { isObject } = require("lodash");
+const crypto = require("crypto");
 
 /**********************************************************************
  * Copyright 2022 Paul Reeve <preeve@pdjr.eu>
@@ -27,7 +28,7 @@ module.exports = class Notification {
 
   makeNotification(path, value, options={}) {
     var notification = { ...value, ...options };
-    notification.id = (notification.id) || self.crypto.randomUUID();
+    notification.id = (notification.id) || crypto.randomUUID();
     notification.path = path;
     notification.data = { value: this.app.getSelfPath(path + ".value") };
     notification.actions = notification.actions || [];
