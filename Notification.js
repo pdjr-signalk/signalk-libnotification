@@ -1,5 +1,8 @@
 "use strict;"
 
+const { isObject } = require("lodash");
+const crypto = require("crypto");
+
 /**********************************************************************
  * Copyright 2022 Paul Reeve <preeve@pdjr.eu>
  *
@@ -18,8 +21,9 @@
 
 module.exports = class Notification {
 
-  constructor(app) {
+  constructor(app, debug=false) {
     this.app = app;
+    this.debug = debug;
   }
 
   makeNotification(path, value, options={}) {
@@ -29,6 +33,39 @@ module.exports = class Notification {
     notification.data = { value: this.app.getSelfPath(path + ".value") };
     notification.actions = notification.actions || [];
     return(notification); 
+  }
+
+  getNotification(id) {
+    if (this.debug) this.app.debug("getNotification(%s)...", id);
+
+    const notifications = this.app.getSelfPath('notifications');
+    return(_getNotification(notifications, id));
+  }
+
+  getNotifications(f) {
+    if (this.debug) this.app.debug("getNotifications(f)...");
+    var matches = {};
+
+    this._getNotifications(this.app.getSelfPath('notifications'), matches, f);
+    return(matches);
+  }
+
+  _getNotifications(notifications, matches, f) {
+    if (this.debug) this.app.debug("_getNotification(_,%s,_)...", JSON.stringify(matches));
+    var retval = {};
+
+    for (var key in notifications) {
+      if ((notifications[key] !== null) && (typeof notifications[key] == 'object') && (!Array.isArray(notifications[key]))) {
+        if ((key == 'value') && (notifications[key].state) && (notifications[key].path)) {
+          if ((!f) || (f(notifications[key]))) {
+            matches[notifications[key].path] = notifications[key];
+          }
+        } else {
+          this._getNotifications(notifications[key], matches, f);
+        }
+      }
+    }
+    return;
   }
 
 }
