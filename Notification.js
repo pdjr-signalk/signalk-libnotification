@@ -21,47 +21,57 @@ const crypto = require("crypto");
 
 module.exports = class Notification {
 
-  constructor(app, debug=false) {
-    this.app = app;
-    this.debug = debug;
+  static app;
+  
+  static link(app) {
+    Notification.app = app;
   }
 
-  makeNotification(path, value, options={}) {
-    var notification = { ...value, ...options };
+  static canonicalise(path, value, options={}) {
+    var notification = { ...{ state: 'normal', method: [], description: '' }, ...value, ...options };
     notification.id = (notification.id) || crypto.randomUUID();
     notification.path = path;
-    notification.data = { value: this.app.getSelfPath(path + ".value") };
+    notification.data = (Notification.app)?{ value: Notification.app.getSelfPath(path + ".value") }:{};
     notification.actions = notification.actions || [];
     return(notification); 
   }
 
-  getNotification(id) {
-    if (this.debug) this.app.debug("getNotification(%s)...", id);
-
-    const notifications = this.app.getSelfPath('notifications');
-    return(_getNotification(notifications, id));
+  static getNotification(key) {
+    if (Notification.app) {
+      const notifications = Notification.app.getSelfPath('notifications');
+      return(_getNotifications(notifications, (n) => ((n) && (((n.id) && (n.id == key)) || ((n.path) && (n.path == key))))));
+    } else {
+      throw new Error('Host app is not linked');
+    }
   }
 
-  getNotifications(f) {
-    if (this.debug) this.app.debug("getNotifications(f)...");
-    var matches = {};
-
-    this._getNotifications(this.app.getSelfPath('notifications'), matches, f);
-    return(matches);
+  static getNotifications(f=undefined) {
+    if (Notification.app) {
+      if ((f) && (_.isFunction(f))) {
+        var matches = {};
+        Notification._getNotifications(Notification.app.getSelfPath('notifications'), matches, f);
+        return(matches);
+      } else {
+        throw new Error('Argument is not a function');
+      }
+    } else {
+      throw new Error('Host app is not linked');
+    }
   }
 
-  _getNotifications(notifications, matches, f) {
-    if (this.debug) this.app.debug("_getNotification(_,%s,_)...", JSON.stringify(matches));
-    var retval = {};
+  static _getNotifications(notifications, matches, f) {
+    if (Notification.app) Notification.app.debug("_getNotifications(_,%s,_)...", JSON.stringify(matches));
+    var retval = {}, id, path;
 
     for (var key in notifications) {
-      if ((notifications[key] !== null) && (typeof notifications[key] == 'object') && (!Array.isArray(notifications[key]))) {
-        if ((key == 'value') && (notifications[key].state) && (notifications[key].path)) {
+      if (_.isObject(notifications[key])) {
+        if ((key == 'value') && (notifications[key].state)) {
           if ((!f) || (f(notifications[key]))) {
-            matches[notifications[key].path] = notifications[key];
+            if (id = notifications[key].id) matches[id] = notifications[key];
+            if (path = notifications[key].path) matches[path] = notifications[key];
           }
         } else {
-          this._getNotifications(notifications[key], matches, f);
+          Notification._getNotifications(notifications[key], matches, f);
         }
       }
     }
