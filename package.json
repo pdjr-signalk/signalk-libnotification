@@ -4,7 +4,10 @@
   "description": "Signal K notification helper",
   "main": "Notification.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "publish": "yq -o=json -I=2 resources/openApi.yaml > resources/openApi.json",
+    "test": "echo \"Error: no test specified\"",
+    "build": "tsc",
+    "prepare": "tsc"
   },
   "repository": {
     "type": "git",
@@ -15,5 +18,12 @@
   "bugs": {
     "url": "https://github.com/pdjr-signalk/signalk-libnotification/issues"
   },
-  "homepage": "https://github.com/pdjr-signalk/signalk-libnotification#readme"
+  "homepage": "https://github.com/pdjr-signalk/signalk-libnotification#readme",
+  "devDependencies": {
+    "@types/node": "^22.5.5",
+    "@types/uuid": "^10.0.0"
+  },
+  "dependencies": {
+    "uuid": "^10.0.0"
+  }
 }
