@@ -3,7 +3,7 @@
 Issue and cancel Signal K notifications.
 
 ```
-const Notification = require("./signalk-libnotification/Notification.js");
+import Notification from 'signalk-libnotification'
 
 const notification = new Notification(app, plugin.id, { "state": "alert", "method": [ "sound" ] });
 

@@ -18,37 +18,37 @@ import * as _ from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
 
-class SKNotification {
+class Notification {
 
   static app: any
   
   static link(app: any) {
-    SKNotification.app = app
+    Notification.app = app
   }
 
   static canonicalise(path: string, value: object, options: object = {}): any {
     var notification: any = { ...{ state: 'normal', method: [], description: '' }, ...value, ...options }
     notification.id = (notification.id) || uuidv4();
     notification.path = path;
-    notification.data = (SKNotification.app)?{ value: SKNotification.app.getSelfPath(path + ".value") }:{};
+    notification.data = (Notification.app)?{ value: Notification.app.getSelfPath(path + ".value") }:{};
     notification.actions = notification.actions || [];
     return(notification); 
   }
 
   static getNotification(key: string): any {
-    if (SKNotification.app) {
-      const notifications: any = SKNotification.app.getSelfPath('notifications');
-      return(SKNotification._getNotifications(notifications, (n: any) => ((n) && (((n.id) && (n.id == key)) || ((n.path) && (n.path == key))))));
+    if (Notification.app) {
+      const notifications: any = Notification.app.getSelfPath('notifications');
+      return(Notification._getNotifications(notifications, (n: any) => ((n) && (((n.id) && (n.id == key)) || ((n.path) && (n.path == key))))));
     } else {
       throw new Error('Host app is not linked');
     }
   }
 
   static getNotifications(f: any = undefined) {
-    if (SKNotification.app) {
+    if (Notification.app) {
       if ((f) && (_.isFunction(f))) {
         var matches = {};
-        SKNotification._getNotifications(SKNotification.app.getSelfPath('notifications'), matches, f);
+        Notification._getNotifications(Notification.app.getSelfPath('notifications'), matches, f);
         return(matches);
       } else {
         throw new Error('Argument is not a function');
@@ -59,7 +59,7 @@ class SKNotification {
   }
 
   static _getNotifications(notifications: any, matches: any, f: any = undefined) {
-    if (SKNotification.app) SKNotification.app.debug("_getNotifications(_,%s,_)...", JSON.stringify(matches));
+    if (Notification.app) Notification.app.debug("_getNotifications(_,%s,_)...", JSON.stringify(matches));
     var retval: any = {}, id: string, path: string;
 
     for (var key in notifications) {
@@ -70,7 +70,7 @@ class SKNotification {
             if (path = notifications[key].path) matches[path] = notifications[key];
           }
         } else {
-          SKNotification._getNotifications(notifications[key], matches, f);
+          Notification._getNotifications(notifications[key], matches, f);
         }
       }
     }
