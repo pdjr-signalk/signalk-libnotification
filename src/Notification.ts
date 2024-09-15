@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  */
 
-const _ = require("lodash")
+import * as _ from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
 
